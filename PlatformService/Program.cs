@@ -9,10 +9,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMen"));
-builder.Services.AddSingleton<IPlatformRepo, PlatformRepo>();
+builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 
 
 var app = builder.Build();
+
+PrepDb.PrepPopulation(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
