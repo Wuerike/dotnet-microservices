@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "PlatformService": {
+    "PlatformApi": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
