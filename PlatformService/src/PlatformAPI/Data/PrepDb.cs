@@ -1,6 +1,6 @@
-using PlatformService.Models;
+using PlatformApi.Models;
 
-namespace PlatformService.Data
+namespace PlatformApi.Data
 {
     public static class PrepDb
     {
