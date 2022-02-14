@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/PlatformService.csproj",
+                "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/PlatformService.csproj",
+                "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/PlatformService.csproj"
+                "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
