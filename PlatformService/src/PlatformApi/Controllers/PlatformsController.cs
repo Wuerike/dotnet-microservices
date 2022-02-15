@@ -29,7 +29,7 @@ namespace PlatformApi.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(p));
+            return _mapper.Map<IEnumerable<PlatformReadDto>>(p).ToList();
         }
 
         [HttpGet("{id}")] // GET /platformts/{id}
@@ -42,7 +42,7 @@ namespace PlatformApi.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<PlatformReadDto>(p));
+            return _mapper.Map<PlatformReadDto>(p);
         }
 
         [HttpPost] // POST /items

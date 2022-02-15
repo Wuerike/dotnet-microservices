@@ -1,5 +1,8 @@
 SHELL := /bin/bash
 
+test:
+	cd src/PlatformApiUnitTests && dotnet test
+
 local-run:
 	cd src/PlatformApi && dotnet run
 
