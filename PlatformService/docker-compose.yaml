@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  platform-api:
+    image: platform-api:v1
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    network_mode: "host"
