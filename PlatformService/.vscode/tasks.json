@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj",
+                "${workspaceFolder}/src/PlatformService.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj",
+                "${workspaceFolder}/src/PlatformService.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj"
+                "${workspaceFolder}/src/PlatformService.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -46,12 +46,12 @@
             "dockerBuild": {
                 "tag": "platformservice:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/src/PlatformAPI/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj"
+                "appProject": "${workspaceFolder}/src/PlatformService.csproj"
             }
         },
         {
@@ -62,12 +62,12 @@
             ],
             "dockerBuild": {
                 "tag": "platformservice:latest",
-                "dockerfile": "${workspaceFolder}/src/PlatformAPI/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj"
+                "appProject": "${workspaceFolder}/src/PlatformService.csproj"
             }
         },
         {
@@ -78,7 +78,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj",
+                "appProject": "${workspaceFolder}/src/PlatformService.csproj",
                 "enableDebugging": true
             }
         },
@@ -90,7 +90,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/src/PlatformAPI/PlatformApi.csproj"
+                "appProject": "${workspaceFolder}/src/PlatformService.csproj"
             }
         }
     ]

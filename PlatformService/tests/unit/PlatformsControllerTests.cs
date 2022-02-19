@@ -4,14 +4,14 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using PlatformApi.Controllers;
-using PlatformApi.Data;
-using PlatformApi.Dtos;
-using PlatformApi.Models;
-using PlatformApi.Profiles;
+using PlatformService.Controllers;
+using PlatformService.Data;
+using PlatformService.Dtos;
+using PlatformService.Models;
+using PlatformService.Profiles;
 using Xunit;
 
-namespace PlatformApiUnitTests;
+namespace PlatformServiceUnitTests;
 
 public class PlatformsControllerTests
 {

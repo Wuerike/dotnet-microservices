@@ -1,10 +1,10 @@
 SHELL := /bin/bash
 
-test:
-	cd src/PlatformApiUnitTests && dotnet test
+unit-test:
+	cd tests/unit && dotnet test
 
 local-run:
-	cd src/PlatformApi && dotnet run
+	cd src && dotnet run
 
 docker-build:
 	docker build -t platform-api:v1 .
