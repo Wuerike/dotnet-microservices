@@ -15,5 +15,27 @@ namespace PlatformService.SyncDataServices.Http
             _configuration = configuration;
         }
 
+        public async Task SendPlatformToCommand(PlatformReadDto p)
+        {
+            var httpContent = new StringContent(
+                JsonSerializer.Serialize(p),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            var response = await _httpClient.PostAsync(
+                _configuration["CommandService"],
+                httpContent
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("----> Teste deu bom");
+            }
+            else
+            {
+                Console.WriteLine("----> Teste deu ruim");
+            }
+        }
     }
 }
