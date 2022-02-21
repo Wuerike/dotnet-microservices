@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlatformService.Data;
 using PlatformService.Dtos;
 using PlatformService.Models;
+using PlatformService.SyncDataServices.Http;
 
 namespace PlatformService.Controllers
 {
@@ -12,11 +13,13 @@ namespace PlatformService.Controllers
     {
         private readonly IPlatformRepo _repository;
         private readonly IMapper _mapper;
+        private ICommandDataClient _commandDataClient;
 
-        public PlatformsController(IPlatformRepo repository, IMapper mapper)
+        public PlatformsController(IPlatformRepo repository, IMapper mapper, ICommandDataClient commandDataClient)
         {
             _repository = repository;
             _mapper = mapper;
+            _commandDataClient = commandDataClient;
         }
 
         [HttpGet] // GET /platformts
@@ -45,15 +48,28 @@ namespace PlatformService.Controllers
             return _mapper.Map<PlatformReadDto>(p);
         }
 
-        [HttpPost] // POST /items
-        public ActionResult<PlatformReadDto> CreatePlatform(PlatformCreateDto request)
+        [HttpPost] // POST /platformts
+        public async Task<ActionResult<PlatformReadDto>> CreatePlatform(PlatformCreateDto request)
         {
             var p = _mapper.Map<Platform>(request);
 
             _repository.CreatePlatform(p);
             _repository.SaveChanges();
 
-            return CreatedAtAction(nameof(GetPlatformById), new{id = p.Id}, _mapper.Map<PlatformReadDto>(p));
+            var platformReadDto = _mapper.Map<PlatformReadDto>(p);
+            
+            try
+            {
+                await _commandDataClient.SendPlatformToCommand(platformReadDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"--> falha ao chamar command api: {ex.Message}");
+
+                throw ex;
+            }
+
+            return CreatedAtAction(nameof(GetPlatformById), new{id = p.Id}, platformReadDto);
         }
     }
 }
