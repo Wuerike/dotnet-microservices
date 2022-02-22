@@ -1,0 +1,41 @@
+# Command app deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: command-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: command-api
+  template:
+    metadata:
+      labels:
+        app: command-api
+    spec:
+      containers:
+      - name: command-api
+        image: wuerike/command-api:v1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+
+---
+
+# command app cluster IP
+apiVersion: v1
+kind: Service
+metadata:
+  name: command-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: command-api
+  ports:
+  - name: command-api
+    protocol: TCP
+    port: 80
+    targetPort: 6000
