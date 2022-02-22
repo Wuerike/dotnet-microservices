@@ -11,6 +11,3 @@ docker-build:
 
 docker-run:
 	docker run -it --rm --network=host platform-api:v1
-
-kube-deploy:
-	kubectl apply -f .kubernetes/platforms-api.yaml
