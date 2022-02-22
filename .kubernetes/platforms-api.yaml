@@ -22,3 +22,20 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 5000
+
+---
+
+# Platform app cluster IP
+apiVersion: v1
+kind: Service
+metadata:
+  name: platform-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: platform-api
+  ports:
+  - name: platform-api
+    protocol: TCP
+    port: 80
+    targetPort: 5000
