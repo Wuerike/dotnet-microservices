@@ -1,0 +1,71 @@
+# SQL Server Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-platform-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql-platform
+  template:
+    metadata:
+      labels:
+        app: mssql-platform
+    spec:
+      containers:
+      - name: mssql-platform
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        ports:
+        - containerPort: 1433
+        env:
+        - name: MSSQL_PID
+          value: "Express"
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kube-env
+              key: MSSQL_PASSWORD
+        volumeMounts:
+        - mountPath: /var/opt/mssql/data
+          name: mssqldb
+      volumes:
+      - name: mssqldb
+        persistentVolumeClaim:
+          claimName: mssql-claim
+
+---
+
+# SQL Server Cluster IP
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: mssql-platform
+  ports:
+  - name: mssql-platform
+    protocol: TCP
+    port: 1433
+    targetPort: 1433
+
+---
+
+# SQL Server NodePort
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-np-srv
+spec:
+  type: NodePort
+  selector:
+    app: mssql-platform
+  ports:
+  - port: 1433
+    targetPort: 1433
+    nodePort: 31433
+
