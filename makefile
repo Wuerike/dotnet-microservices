@@ -8,5 +8,6 @@ deploy:
 	make kube-secrets
 	kubectl apply -f .kubernetes/platforms-api.yaml
 	kubectl apply -f .kubernetes/commands-api.yaml
-	kubectl apply -f .kubernetes/platforms-np-srv.yaml
 	kubectl apply -f .kubernetes/ingress-srv.yaml
+	kubectl apply -f .kubernetes/local-pvc.yaml
+	kubectl apply -f .kubernetes/mssql-platform-depl.yaml
