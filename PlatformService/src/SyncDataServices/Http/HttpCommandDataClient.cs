@@ -1,18 +1,19 @@
 using System.Text;
 using System.Text.Json;
 using PlatformService.Dtos;
+using PlatformService.Settings;
 
 namespace PlatformService.SyncDataServices.Http
 {
     public class HttpCommandDataClient : ICommandDataClient
     {
         private readonly HttpClient _httpClient;
-        private IConfiguration _configuration;
+        private readonly string _baseUrl;
 
-        public HttpCommandDataClient(HttpClient httpClient, IConfiguration configuration)
+        public HttpCommandDataClient(HttpClient httpClient, IEnvironmentVariables envVars)
         {
             _httpClient = httpClient;
-            _configuration = configuration;
+            _baseUrl = envVars.GetCommandServiceUrl();
         }
 
         public async Task SendPlatformToCommand(PlatformReadDto p)
@@ -24,7 +25,7 @@ namespace PlatformService.SyncDataServices.Http
             );
 
             var response = await _httpClient.PostAsync(
-                _configuration["CommandService"],
+                $"{_baseUrl}/api/c/platforms",
                 httpContent
             );
 

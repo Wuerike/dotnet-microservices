@@ -3,6 +3,7 @@ using PlatformService.Data;
 using PlatformService.Settings;
 using PlatformService.SyncDataServices.Http;
 
+var envVars = new EnvironmentVariables();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,7 +20,7 @@ if(builder.Environment.IsProduction())
 {
     Console.WriteLine("--> Using MSSQL DB");
     builder.Services.AddDbContext<AppDbContext>(opt => 
-        opt.UseSqlServer(builder.Configuration.GetConnectionString("PlatformsMSSQL")) 
+        opt.UseSqlServer(envVars.GetConnectionString()) 
     );
 }
 else
