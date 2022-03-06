@@ -16,24 +16,24 @@ builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 
-if(builder.Environment.IsProduction())
-{
-    Console.WriteLine("--> Using MSSQL DB");
-    builder.Services.AddDbContext<AppDbContext>(opt => 
-        opt.UseSqlServer(envVars.GetConnectionString()) 
-    );
-}
-else
+if(envVars.IsInMemoryDb())
 {
     Console.WriteLine("--> Using InMem DB");
     builder.Services.AddDbContext<AppDbContext>(opt => 
         opt.UseInMemoryDatabase("InMen")
     );
 }
+else
+{
+    Console.WriteLine($"--> Using MSSQL DB: {envVars.GetConnectionString()}");
+    builder.Services.AddDbContext<AppDbContext>(opt => 
+        opt.UseSqlServer(envVars.GetConnectionString()) 
+    );
+}
 
 var app = builder.Build();
 
-PrepDb.PrepPopulation(app, app.Environment.IsProduction());
+PrepDb.PrepPopulation(app, envVars.IsInMemoryDb());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

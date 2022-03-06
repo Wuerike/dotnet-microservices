@@ -5,17 +5,17 @@ namespace PlatformService.Data
 {
     public static class PrepDb
     {
-        public static void PrepPopulation(IApplicationBuilder app, bool IsProduction)
+        public static void PrepPopulation(IApplicationBuilder app, bool IsInMemoryDb)
         {
             using ( var serviceScope = app.ApplicationServices.CreateScope())
             {
-                SeedData(serviceScope.ServiceProvider.GetService<AppDbContext>(), IsProduction);    
+                SeedData(serviceScope.ServiceProvider.GetService<AppDbContext>(), IsInMemoryDb);    
             }
         }
 
-        public static void SeedData(AppDbContext context, bool IsProduction)
+        public static void SeedData(AppDbContext context, bool IsInMemoryDb)
         {
-            if(IsProduction)
+            if(!IsInMemoryDb)
             {
                 Console.WriteLine("--> Trying to apply migrations");
                 try
