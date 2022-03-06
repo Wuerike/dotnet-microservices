@@ -5,5 +5,7 @@ namespace PlatformService.Settings
         string GetConnectionString();
 
         string GetCommandServiceUrl();
+
+        bool IsInMemoryDb();
     }
 }
