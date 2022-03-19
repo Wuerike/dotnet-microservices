@@ -3,7 +3,7 @@ using CommandService.Models;
 
 namespace CommandService.Data
 {
-    interface ICommandRepo
+    public interface ICommandRepo
     {
         bool SaveChanges();
 
