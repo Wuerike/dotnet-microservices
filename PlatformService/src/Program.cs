@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PlatformService.Data;
 using PlatformService.Settings;
 using PlatformService.DataServices.Sync.Http;
+using PlatformService.DataServices.Async;
 
 var envVars = new EnvironmentVariables();
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddSingleton<IEnvironmentVariables, EnvironmentVariables>();
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
+builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
 if(envVars.IsInMemoryDb())
 {
