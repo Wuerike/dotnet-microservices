@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PlatformService.Data;
 using PlatformService.Settings;
-using PlatformService.SyncDataServices.Http;
+using PlatformService.DataServices.Sync.Http;
 
 var envVars = new EnvironmentVariables();
 var builder = WebApplication.CreateBuilder(args);

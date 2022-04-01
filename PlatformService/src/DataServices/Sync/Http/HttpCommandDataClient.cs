@@ -3,7 +3,7 @@ using System.Text.Json;
 using PlatformService.Dtos;
 using PlatformService.Settings;
 
-namespace PlatformService.SyncDataServices.Http
+namespace PlatformService.DataServices.Sync.Http
 {
     public class HttpCommandDataClient : ICommandDataClient
     {
