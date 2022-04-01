@@ -21,6 +21,16 @@ namespace PlatformService.Settings
             return baseUrl;
         }
 
+        public IDictionary<string, string> MessageBusVariables()
+        {
+            var messageBusVariables = new Dictionary<string, string>(){
+                {"Host", GetEnvironmentVariable("RABBITMQ_HOST", "")},
+                {"Port", GetEnvironmentVariable("RABBITMQ_PORT", "")}
+            };
+
+            return messageBusVariables;
+        }
+
         public bool IsInMemoryDb()
         {
             var IsInMemoryDb = GetEnvironmentVariable("PLATFORM_IS_IN_MEM_DB", "False");

@@ -6,6 +6,8 @@ namespace PlatformService.Settings
 
         string GetCommandServiceUrl();
 
+        IDictionary<string, string> MessageBusVariables();
+
         bool IsInMemoryDb();
     }
 }
