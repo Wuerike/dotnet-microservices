@@ -3,6 +3,11 @@ using System.Text.Json;
 using PlatformService.Dtos;
 using PlatformService.Settings;
 
+/*
+    Example of an HTTP Client
+    The errors logs are always expected because
+    The post endpoint is not implemented in the Command API
+*/
 namespace PlatformService.DataServices.Sync.Http
 {
     public class HttpCommandDataClient : ICommandDataClient
@@ -31,11 +36,11 @@ namespace PlatformService.DataServices.Sync.Http
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("----> Teste deu bom");
+                Console.WriteLine("--> Command API request succeeded");
             }
             else
             {
-                Console.WriteLine("----> Teste deu ruim");
+                Console.WriteLine("--> Command API request failed");
             }
         }
     }
