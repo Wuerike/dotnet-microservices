@@ -4,7 +4,7 @@ unit-test:
 	cd tests/unit && dotnet test
 
 local-run:
-	cd src && dotnet run
+	set -a && source .env && set +a && cd src && dotnet run
 
 docker-build:
 	docker build -t command-api:v1 .
