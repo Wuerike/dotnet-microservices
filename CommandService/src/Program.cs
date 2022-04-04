@@ -1,4 +1,5 @@
 using CommandService.Data;
+using CommandService.EventProcessing;
 using CommandService.Settings;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IEnvironmentVariables, EnvironmentVariables>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 builder.Services.AddScoped<ICommandRepo, CommandRepo>();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMen"));
 
