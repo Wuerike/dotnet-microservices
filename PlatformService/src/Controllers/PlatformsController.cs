@@ -4,6 +4,7 @@ using PlatformService.Data;
 using PlatformService.Dtos;
 using PlatformService.Models;
 using PlatformService.DataServices.Sync.Http;
+using PlatformService.DataServices.Async;
 
 namespace PlatformService.Controllers
 {
@@ -14,12 +15,14 @@ namespace PlatformService.Controllers
         private readonly IPlatformRepo _repository;
         private readonly IMapper _mapper;
         private ICommandDataClient _commandDataClient;
+        private readonly IMessageBusClient _messageBusClient;
 
-        public PlatformsController(IPlatformRepo repository, IMapper mapper, ICommandDataClient commandDataClient)
+        public PlatformsController(IPlatformRepo repository, IMapper mapper, ICommandDataClient commandDataClient, IMessageBusClient messageBusClient)
         {
             _repository = repository;
             _mapper = mapper;
             _commandDataClient = commandDataClient;
+            _messageBusClient = messageBusClient;
         }
 
         [HttpGet] // GET /platformts
@@ -64,9 +67,18 @@ namespace PlatformService.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"--> falha ao chamar command api: {ex.Message}");
+                Console.WriteLine($"--> Internal error while posting to command api: {ex.Message}");
+            }
 
-                throw ex;
+            try
+            {
+                var platformPublishDto = _mapper.Map<PlatformPublishDto>(platformReadDto);
+                platformPublishDto.Event = "platform_publish";
+                _messageBusClient.PublishNewPlatform(platformPublishDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"--> Could not send the platform over the message bus: {ex.Message}");
             }
 
             return CreatedAtAction(nameof(GetPlatformById), new{id = p.Id}, platformReadDto);
