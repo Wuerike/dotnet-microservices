@@ -9,6 +9,7 @@ namespace CommandService.Profiles
         public PlatformProfile()
         {
             CreateMap<Platform, PlatformReadDto>();
+            CreateMap<PlatformPublishDto, Platform>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
         }
     }
 }
