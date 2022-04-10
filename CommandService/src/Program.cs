@@ -1,5 +1,6 @@
 using CommandService.Data;
 using CommandService.DataServices.Async;
+using CommandService.DataServices.Sync.Grpc;
 using CommandService.EventProcessing;
 using CommandService.Settings;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ builder.Services.AddSingleton<IEnvironmentVariables, EnvironmentVariables>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 builder.Services.AddHostedService<MessageBusSubscriber>();
+builder.Services.AddScoped<IPlatformDataClient, PlatformDataClient>();
 builder.Services.AddScoped<ICommandRepo, CommandRepo>();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMen"));
 
