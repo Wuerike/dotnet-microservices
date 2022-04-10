@@ -42,6 +42,10 @@ spec:
     protocol: TCP
     port: 80
     targetPort: 5000
+  - name: platform-api-grpc
+    protocol: TCP
+    port: 666
+    targetPort: 666
 
 ---
 
