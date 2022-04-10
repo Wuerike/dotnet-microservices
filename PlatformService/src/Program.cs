@@ -3,6 +3,7 @@ using PlatformService.Data;
 using PlatformService.Settings;
 using PlatformService.DataServices.Sync.Http;
 using PlatformService.DataServices.Async;
+using PlatformService.DataServices.Async.Grpc;
 
 var envVars = new EnvironmentVariables();
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
+builder.Services.AddGrpc();
 
 if(envVars.IsInMemoryDb())
 {
@@ -49,5 +51,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<GrpcPlatformService>();
+app.MapGet("/protos/platforms.proto", async context =>
+    {
+        await context.Response.WriteAsync(File.ReadAllText("/Protos/platforms.proto"));
+    }
+);
 
 app.Run();
