@@ -20,4 +20,4 @@ services:
     environment:
       MSSQL_PID: "Express"
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: ${PLATFORM_SQL_SERVER_PASSWORD}
+      SA_PASSWORD: ${PLATFORM_API_SQL_SERVER_PASSWORD}

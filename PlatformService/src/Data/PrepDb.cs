@@ -1,21 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 using PlatformService.Models;
+using PlatformService.Settings;
 
 namespace PlatformService.Data
 {
     public static class PrepDb
     {
-        public static void PrepPopulation(IApplicationBuilder app, bool IsInMemoryDb)
+        public static void PrepPopulation(IApplicationBuilder app)
         {
             using ( var serviceScope = app.ApplicationServices.CreateScope())
             {
-                SeedData(serviceScope.ServiceProvider.GetService<AppDbContext>(), IsInMemoryDb);    
+                var variables = serviceScope.ServiceProvider.GetService<IEnvironmentVariables>();
+                SeedData(serviceScope.ServiceProvider.GetService<AppDbContext>(), variables);    
             }
         }
 
-        public static void SeedData(AppDbContext context, bool IsInMemoryDb)
+        public static void SeedData(AppDbContext context, IEnvironmentVariables variables)
         {
-            if(!IsInMemoryDb)
+            var inMemoryDb = bool.Parse(variables.ApplicationVariables()["InMemoryDb"]);
+
+            if(!inMemoryDb)
             {
                 Console.WriteLine("--> Trying to apply migrations");
                 try

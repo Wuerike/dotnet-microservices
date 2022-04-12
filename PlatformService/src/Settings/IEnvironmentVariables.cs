@@ -2,12 +2,9 @@ namespace PlatformService.Settings
 {
     public interface IEnvironmentVariables
     {
-        string GetConnectionString();
-
-        string GetCommandServiceUrl();
-
+        IDictionary<string, string> ApplicationVariables();
+        IDictionary<string, string> CommandApiVariables();
+        IDictionary<string, string> DatabaseVariables();
         IDictionary<string, string> MessageBusVariables();
-
-        bool IsInMemoryDb();
     }
 }

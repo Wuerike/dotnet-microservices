@@ -5,7 +5,9 @@ using PlatformService.DataServices.Sync.Http;
 using PlatformService.DataServices.Async;
 using PlatformService.DataServices.Async.Grpc;
 
-var envVars = new EnvironmentVariables();
+var environment = new EnvironmentVariables();
+var inMemoryDb = bool.Parse(environment.ApplicationVariables()["InMemoryDb"]);
+var connectionString = environment.DatabaseVariables()["ConnectionString"];
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,7 +22,7 @@ builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 builder.Services.AddGrpc();
 
-if(envVars.IsInMemoryDb())
+if(inMemoryDb)
 {
     Console.WriteLine("--> Using InMem DB");
     builder.Services.AddDbContext<AppDbContext>(opt => 
@@ -29,15 +31,15 @@ if(envVars.IsInMemoryDb())
 }
 else
 {
-    Console.WriteLine($"--> Using MSSQL DB: {envVars.GetConnectionString()}");
+    Console.WriteLine($"--> Using MSSQL DB: {connectionString}");
     builder.Services.AddDbContext<AppDbContext>(opt => 
-        opt.UseSqlServer(envVars.GetConnectionString()) 
+        opt.UseSqlServer(connectionString) 
     );
 }
 
 var app = builder.Build();
 
-PrepDb.PrepPopulation(app, envVars.IsInMemoryDb());
+PrepDb.PrepPopulation(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
