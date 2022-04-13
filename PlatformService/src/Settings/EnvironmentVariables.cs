@@ -37,7 +37,8 @@ namespace PlatformService.Settings
         {
             return new Dictionary<string, string>(){
                 {"Host", GetEnvironmentVariable("PLATFORM_API_RABBITMQ_HOST", "")},
-                {"Port", GetEnvironmentVariable("PLATFORM_API_RABBITMQ_PORT", "")}
+                {"Port", GetEnvironmentVariable("PLATFORM_API_RABBITMQ_PORT", "")},
+                {"Exchange", GetEnvironmentVariable("PLATFORM_API_RABBITMQ_EXCHANGE", "")}
             };
         }
     }

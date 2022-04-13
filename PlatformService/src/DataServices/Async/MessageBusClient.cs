@@ -10,10 +10,12 @@ namespace PlatformService.DataServices.Async
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
+        private readonly string _exchange;
 
         public MessageBusClient(IEnvironmentVariables environment)
         {
             var variables = environment.MessageBusVariables();
+            _exchange = variables["Exchange"];
 
             var factory = new ConnectionFactory(){
                 HostName = variables["Host"], 
@@ -24,7 +26,7 @@ namespace PlatformService.DataServices.Async
             {
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
-                _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
+                _channel.ExchangeDeclare(exchange: _exchange, type: ExchangeType.Fanout);
                 _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
                 Console.WriteLine($"--> Connected to RabbitMQ message bus");
             }
@@ -54,7 +56,7 @@ namespace PlatformService.DataServices.Async
             var body = Encoding.UTF8.GetBytes(message);
 
             _channel.BasicPublish(
-                exchange: "trigger", 
+                exchange: _exchange, 
                 routingKey: "", 
                 basicProperties: null, 
                 body: body
