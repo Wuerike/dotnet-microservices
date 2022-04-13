@@ -16,7 +16,7 @@ namespace CommandService.DataServices.Async
 
         public MessageBusSubscriber(IEnvironmentVariables environment, IEventProcessor eventProcessor)
         {
-            _variables = environment.MessageBus();
+            _variables = environment.MessageBusVariables();
             _eventProcessor = eventProcessor;
 
             InitializeRabbitMQ();

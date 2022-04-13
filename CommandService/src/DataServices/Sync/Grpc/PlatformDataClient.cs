@@ -13,7 +13,7 @@ namespace CommandService.DataServices.Sync.Grpc
 
         public PlatformDataClient(IEnvironmentVariables environment, IMapper mapper)
         {
-            _variables = environment.PlatformApi();
+            _variables = environment.PlatformApiVariables();
             _mapper = mapper;
         }
 

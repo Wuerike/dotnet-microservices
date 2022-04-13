@@ -2,23 +2,23 @@ namespace CommandService.Settings
 {
     public class EnvironmentVariables : IEnvironmentVariables
     {
-        public static string GetEnvironmentVariable(string name, string defaultValue)
+        private static string GetEnvironmentVariable(string name, string defaultValue)
             => Environment.GetEnvironmentVariable(name) is string v && v.Length > 0 ? v : defaultValue;
 
-        public IDictionary<string, string> PlatformApi()
+        public IDictionary<string, string> PlatformApiVariables()
         {
             var platformApiVariables = new Dictionary<string, string>(){
-                {"GrpcHost", GetEnvironmentVariable("PLATFORM_API_GRPC", "")},
+                {"GrpcHost", GetEnvironmentVariable("COMMAND_API_PLATFORM_API_GRPC", "")},
             };
 
             return platformApiVariables;
         }
 
-        public IDictionary<string, string> MessageBus()
+        public IDictionary<string, string> MessageBusVariables()
         {
             var messageBusVariables = new Dictionary<string, string>(){
-                {"Host", GetEnvironmentVariable("RABBITMQ_HOST", "")},
-                {"Port", GetEnvironmentVariable("RABBITMQ_PORT", "")}
+                {"Host", GetEnvironmentVariable("COMMAND_API_RABBITMQ_HOST", "")},
+                {"Port", GetEnvironmentVariable("COMMAND_API_RABBITMQ_PORT", "")}
             };
 
             return messageBusVariables;
