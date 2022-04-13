@@ -18,7 +18,8 @@ namespace CommandService.Settings
         {
             var messageBusVariables = new Dictionary<string, string>(){
                 {"Host", GetEnvironmentVariable("COMMAND_API_RABBITMQ_HOST", "")},
-                {"Port", GetEnvironmentVariable("COMMAND_API_RABBITMQ_PORT", "")}
+                {"Port", GetEnvironmentVariable("COMMAND_API_RABBITMQ_PORT", "")},
+                {"Exchange", GetEnvironmentVariable("COMMAND_API_RABBITMQ_EXCHANGE", "")}
             };
 
             return messageBusVariables;

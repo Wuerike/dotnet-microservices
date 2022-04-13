@@ -33,9 +33,9 @@ namespace CommandService.DataServices.Async
             {
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
-                _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
+                _channel.ExchangeDeclare(exchange: _variables["Exchange"], type: ExchangeType.Fanout);
                 _queueName = _channel.QueueDeclare().QueueName;
-                _channel.QueueBind(queue: _queueName, exchange: "trigger", routingKey: "");
+                _channel.QueueBind(queue: _queueName, exchange: _variables["Exchange"], routingKey: "");
                 _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
                 Console.WriteLine($"--> Connected and listening to the RabbitMQ message bus");
             }
