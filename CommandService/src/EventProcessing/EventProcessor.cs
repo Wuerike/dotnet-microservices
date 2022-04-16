@@ -3,6 +3,7 @@ using AutoMapper;
 using CommandService.Data;
 using CommandService.Dtos;
 using CommandService.Models;
+using Serilog;
 
 namespace CommandService.EventProcessing
 {
@@ -32,17 +33,17 @@ namespace CommandService.EventProcessing
 
         private EventType DetemineEvent(string message)
         {
-            Console.WriteLine($"--> Determing event type");
+            Log.Information("Determing event type");
 
             var eventType = JsonSerializer.Deserialize<GenericEventDto>(message);
 
             switch(eventType.Event)
             {
                 case "platform_publish":
-                    Console.WriteLine($"--> Platform publish event detected");
+                    Log.Information("Platform publish event detected");
                     return EventType.PlatformPublish;
                 default:
-                    Console.WriteLine($"--> Could not determine the event type");
+                    Log.Warning("Could not determine the event type");
                     return EventType.Undertemined;
             }
         }
@@ -65,14 +66,14 @@ namespace CommandService.EventProcessing
                     }
                     else
                     {
-                        Console.WriteLine($"--> Received platform already exists in database");
+                        Log.Warning("Received platform already exists in database");
                     }
                     
                 }
                 catch (Exception)
                 {
                     
-                    Console.WriteLine($"--> Could not add platform to database: {publishedPlatform}");
+                    Log.Error($"Could not add platform to database: {publishedPlatform}");
                 }
 
             }

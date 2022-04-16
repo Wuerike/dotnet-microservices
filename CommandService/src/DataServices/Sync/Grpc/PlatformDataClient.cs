@@ -3,6 +3,7 @@ using CommandService.Models;
 using CommandService.Settings;
 using Grpc.Net.Client;
 using PlatformService;
+using Serilog;
 
 namespace CommandService.DataServices.Sync.Grpc
 {
@@ -19,7 +20,7 @@ namespace CommandService.DataServices.Sync.Grpc
 
         public IEnumerable<Platform> GetAllPlatforms()
         {
-            Console.WriteLine($"--> Requesting platforms via gRPC");
+            Log.Information("Requesting platforms via gRPC");
             var channel = GrpcChannel.ForAddress(_variables["GrpcHost"]);
             var client = new GrpcPlatform.GrpcPlatformClient(channel);
             var request = new GetAllRequest();
@@ -31,7 +32,7 @@ namespace CommandService.DataServices.Sync.Grpc
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"--> Could not call gRPC server {ex.Message}");
+                Log.Error($"Could not call gRPC server {ex.Message}");
                 return null;
             }
         }

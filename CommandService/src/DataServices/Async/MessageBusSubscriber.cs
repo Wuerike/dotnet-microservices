@@ -3,6 +3,7 @@ using CommandService.EventProcessing;
 using CommandService.Settings;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Serilog;
 
 namespace CommandService.DataServices.Async
 {
@@ -37,11 +38,11 @@ namespace CommandService.DataServices.Async
                 _queueName = _channel.QueueDeclare().QueueName;
                 _channel.QueueBind(queue: _queueName, exchange: _variables["Exchange"], routingKey: "");
                 _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
-                Console.WriteLine($"--> Connected and listening to the RabbitMQ message bus");
+                Log.Information("Connected and listening to the RabbitMQ message bus");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"--> Could not connect to the RabbitMQ message bus: {ex.Message}");
+                Log.Error($"Could not connect to the RabbitMQ message bus: {ex.Message}");
             }
         }
 
@@ -53,7 +54,7 @@ namespace CommandService.DataServices.Async
 
             consumer.Received += (ModuleHandle, ea) =>
             {
-                Console.WriteLine("--> Event Received");
+                Log.Information("Event Received");
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body.ToArray());
                 _eventProcessor.ProcessEvent(message);
@@ -65,12 +66,12 @@ namespace CommandService.DataServices.Async
 
         public void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e)
         {
-            Console.WriteLine($"--> RabbitMQ connection shutdown");
+            Log.Information("RabbitMQ connection shutdown");
         }
 
         public override void Dispose()
         {
-            Console.WriteLine($"--> RabbitMQ disposed");
+            Log.Information("RabbitMQ disposed");
             if(_channel.IsOpen)
             {
                 _channel.Close();

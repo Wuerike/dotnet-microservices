@@ -1,5 +1,6 @@
 using CommandService.DataServices.Sync.Grpc;
 using CommandService.Models;
+using Serilog;
 
 namespace CommandService.Data
 {
@@ -19,7 +20,7 @@ namespace CommandService.Data
 
         public static void SeedData(IEnumerable<Platform> platforms, ICommandRepo repo)
         {
-            Console.WriteLine($"--> Seeding platforms incomming from PlatformAPI");
+            Log.Information("Seeding platforms incomming from PlatformAPI");
             
             foreach (var p in platforms)
             {
