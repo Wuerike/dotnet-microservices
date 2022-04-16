@@ -19,7 +19,7 @@ namespace PlatformService.DataServices.Sync.Http
         public HttpCommandDataClient(HttpClient httpClient, IEnvironmentVariables environment)
         {
             _httpClient = httpClient;
-            _baseUrl = environment.CommandApiVariables()["Url"];
+            _baseUrl = environment.CommandApiVariables().BaseUrl;
         }
 
         public async Task SendPlatformToCommand(PlatformReadDto p)

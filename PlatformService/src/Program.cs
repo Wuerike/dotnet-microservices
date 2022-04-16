@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using PlatformService.Data;
 using PlatformService.Settings;
+using PlatformService.Settings.Models;
 using PlatformService.DataServices.Sync.Http;
 using PlatformService.DataServices.Async;
 using PlatformService.DataServices.Async.Grpc;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +17,7 @@ Log.Logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog();
 
-var environment = new EnvironmentVariables();
-var inMemoryDb = bool.Parse(environment.ApplicationVariables()["InMemoryDb"]);
-var connectionString = environment.DatabaseVariables()["ConnectionString"];
+var dbVariables = builder.Configuration.GetSection("Database").Get<DatabaseVariables>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -30,7 +29,7 @@ builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 builder.Services.AddGrpc();
 
-if(inMemoryDb)
+if(bool.Parse(dbVariables.InMemoryDb))
 {
     Log.Information("Using InMem DB");
     builder.Services.AddDbContext<AppDbContext>(opt => 
@@ -39,9 +38,9 @@ if(inMemoryDb)
 }
 else
 {
-    Log.Information($"Using MSSQL DB: {connectionString}");
+    Log.Information($"Using MSSQL DB: {dbVariables.ConnectionString}");
     builder.Services.AddDbContext<AppDbContext>(opt => 
-        opt.UseSqlServer(connectionString) 
+        opt.UseSqlServer(dbVariables.ConnectionString) 
     );
 }
 

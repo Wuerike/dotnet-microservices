@@ -18,7 +18,7 @@ namespace PlatformService.Data
 
         public static void SeedData(AppDbContext context, IEnvironmentVariables variables)
         {
-            var inMemoryDb = bool.Parse(variables.ApplicationVariables()["InMemoryDb"]);
+            var inMemoryDb = bool.Parse(variables.DatabaseVariables().InMemoryDb);
 
             if(!inMemoryDb)
             {

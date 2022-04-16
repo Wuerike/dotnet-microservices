@@ -16,11 +16,11 @@ namespace PlatformService.DataServices.Async
         public MessageBusClient(IEnvironmentVariables environment)
         {
             var variables = environment.MessageBusVariables();
-            _exchange = variables["Exchange"];
+            _exchange = variables.Exchange;
 
             var factory = new ConnectionFactory(){
-                HostName = variables["Host"], 
-                Port = int.Parse(variables["Port"])
+                HostName = variables.Host, 
+                Port = int.Parse(variables.Port)
             };
 
             try
