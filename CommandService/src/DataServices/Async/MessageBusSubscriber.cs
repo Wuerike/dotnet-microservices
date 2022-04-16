@@ -1,6 +1,7 @@
 using System.Text;
 using CommandService.EventProcessing;
 using CommandService.Settings;
+using CommandService.Settings.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Serilog;
@@ -9,7 +10,7 @@ namespace CommandService.DataServices.Async
 {
     public class MessageBusSubscriber : BackgroundService
     {
-        private readonly IDictionary<string, string> _variables;
+        private readonly MessageBusVariables _variables;
         private readonly IEventProcessor _eventProcessor;
         private IConnection _connection;
         private IModel _channel;
@@ -26,17 +27,17 @@ namespace CommandService.DataServices.Async
         private void InitializeRabbitMQ()
         {
             var factory = new ConnectionFactory(){
-                HostName = _variables["Host"], 
-                Port = int.Parse(_variables["Port"])
+                HostName = _variables.Host, 
+                Port = int.Parse(_variables.Port)
             };
 
             try
             {
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
-                _channel.ExchangeDeclare(exchange: _variables["Exchange"], type: ExchangeType.Fanout);
+                _channel.ExchangeDeclare(exchange: _variables.Exchange, type: ExchangeType.Fanout);
                 _queueName = _channel.QueueDeclare().QueueName;
-                _channel.QueueBind(queue: _queueName, exchange: _variables["Exchange"], routingKey: "");
+                _channel.QueueBind(queue: _queueName, exchange: _variables.Exchange, routingKey: "");
                 _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
                 Log.Information("Connected and listening to the RabbitMQ message bus");
             }

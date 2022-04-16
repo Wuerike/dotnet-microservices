@@ -1,28 +1,25 @@
+using CommandService.Settings.Models;
+
 namespace CommandService.Settings
 {
     public class EnvironmentVariables : IEnvironmentVariables
     {
-        private static string GetEnvironmentVariable(string name, string defaultValue)
-            => Environment.GetEnvironmentVariable(name) is string v && v.Length > 0 ? v : defaultValue;
+        private readonly IConfiguration _configuration;
 
-        public IDictionary<string, string> PlatformApiVariables()
+        public EnvironmentVariables(IConfiguration configuration)
         {
-            var platformApiVariables = new Dictionary<string, string>(){
-                {"GrpcHost", GetEnvironmentVariable("COMMAND_API_PLATFORM_API_GRPC", "")},
-            };
-
-            return platformApiVariables;
+            _configuration = configuration;
         }
 
-        public IDictionary<string, string> MessageBusVariables()
+        public PlatformApiVariables PlatformApiVariables()
         {
-            var messageBusVariables = new Dictionary<string, string>(){
-                {"Host", GetEnvironmentVariable("COMMAND_API_RABBITMQ_HOST", "")},
-                {"Port", GetEnvironmentVariable("COMMAND_API_RABBITMQ_PORT", "")},
-                {"Exchange", GetEnvironmentVariable("COMMAND_API_RABBITMQ_EXCHANGE", "")}
-            };
+            return _configuration.GetSection("PlatformApi").Get<PlatformApiVariables>();
+        }
 
-            return messageBusVariables;
+
+        public MessageBusVariables MessageBusVariables()
+        {
+            return _configuration.GetSection("MessageBus").Get<MessageBusVariables>();
         }
     }
 }
