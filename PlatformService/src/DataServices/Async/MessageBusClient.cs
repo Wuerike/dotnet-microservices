@@ -3,6 +3,7 @@ using System.Text.Json;
 using PlatformService.Dtos;
 using PlatformService.Settings;
 using RabbitMQ.Client;
+using Serilog;
 
 namespace PlatformService.DataServices.Async
 {
@@ -28,11 +29,11 @@ namespace PlatformService.DataServices.Async
                 _channel = _connection.CreateModel();
                 _channel.ExchangeDeclare(exchange: _exchange, type: ExchangeType.Fanout);
                 _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
-                Console.WriteLine($"--> Connected to RabbitMQ message bus");
+                Log.Information("Connected to RabbitMQ message bus");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"--> Could not connect to the RabbitMQ message bus: {ex.Message}");
+                Log.Error($"Could not connect to the RabbitMQ message bus: {ex.Message}");
             }
         }
 
@@ -42,12 +43,12 @@ namespace PlatformService.DataServices.Async
 
             if (_connection.IsOpen)
             {
-                Console.WriteLine($"--> RabbitMQ connection is open, sending message");
+                Log.Information("RabbitMQ connection is open, sending message");
                 SendMessage(message);
             }
             else
             {
-                Console.WriteLine($"--> RabbitMQ connection is closed, not sending message");
+                Log.Warning("RabbitMQ connection is closed, not sending message");
             }
         }
 
@@ -62,17 +63,17 @@ namespace PlatformService.DataServices.Async
                 body: body
             );
 
-            Console.WriteLine($"--> RabbitMQ have sent the message: {message}");
+            Log.Information($"RabbitMQ have sent the message: {message}");
         }
 
         public void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e)
         {
-            Console.WriteLine($"--> RabbitMQ connection shutdown");
+            Log.Information("RabbitMQ connection shutdown");
         }
 
         public void Dispose()
         {
-            Console.WriteLine($"--> RabbitMQ disposed");
+            Log.Information("RabbitMQ disposed");
             if(_channel.IsOpen)
             {
                 _channel.Close();

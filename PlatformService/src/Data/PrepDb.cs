@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PlatformService.Models;
 using PlatformService.Settings;
+using Serilog;
 
 namespace PlatformService.Data
 {
@@ -21,20 +22,20 @@ namespace PlatformService.Data
 
             if(!inMemoryDb)
             {
-                Console.WriteLine("--> Trying to apply migrations");
+                Log.Information("Trying to apply migrations");
                 try
                 {
                     context.Database.Migrate();
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"--> Could not migrate: {ex.Message}");
+                    Log.Error($"Could not migrate: {ex.Message}");
                 }
             }
 
             if(!context.Platforms.Any())
             {
-                Console.WriteLine("--> Seeding data");
+                Log.Information("Seeding data");
 
                 context.Platforms.AddRange(
                     new Platform(){Name="Dotnet", Publisher="Microsoft", Cost="Free"},
@@ -46,7 +47,7 @@ namespace PlatformService.Data
             }
             else
             {
-                Console.WriteLine("--> Data already seeded");
+                Log.Information("Data already seeded");
             }
         }
     }

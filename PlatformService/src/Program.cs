@@ -4,13 +4,21 @@ using PlatformService.Settings;
 using PlatformService.DataServices.Sync.Http;
 using PlatformService.DataServices.Async;
 using PlatformService.DataServices.Async.Grpc;
+using Serilog;
+
+var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();
 
 var environment = new EnvironmentVariables();
 var inMemoryDb = bool.Parse(environment.ApplicationVariables()["InMemoryDb"]);
 var connectionString = environment.DatabaseVariables()["ConnectionString"];
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -24,14 +32,14 @@ builder.Services.AddGrpc();
 
 if(inMemoryDb)
 {
-    Console.WriteLine("--> Using InMem DB");
+    Log.Information("Using InMem DB");
     builder.Services.AddDbContext<AppDbContext>(opt => 
         opt.UseInMemoryDatabase("InMen")
     );
 }
 else
 {
-    Console.WriteLine($"--> Using MSSQL DB: {connectionString}");
+    Log.Information($"Using MSSQL DB: {connectionString}");
     builder.Services.AddDbContext<AppDbContext>(opt => 
         opt.UseSqlServer(connectionString) 
     );

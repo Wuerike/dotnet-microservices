@@ -5,6 +5,7 @@ using PlatformService.Dtos;
 using PlatformService.Models;
 using PlatformService.DataServices.Sync.Http;
 using PlatformService.DataServices.Async;
+using Serilog;
 
 namespace PlatformService.Controllers
 {
@@ -63,11 +64,12 @@ namespace PlatformService.Controllers
             
             try
             {
+                // Will always fail, the Command endpoint doesnt exists
                 await _commandDataClient.SendPlatformToCommand(platformReadDto);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"--> Internal error while posting to command api: {ex.Message}");
+                Log.Error($"Internal error while posting to command api: {ex.Message}");
             }
 
             try
@@ -78,7 +80,7 @@ namespace PlatformService.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"--> Could not send the platform over the message bus: {ex.Message}");
+                Log.Error($"Could not send the platform over the message bus: {ex.Message}");
             }
 
             return CreatedAtAction(nameof(GetPlatformById), new{id = p.Id}, platformReadDto);

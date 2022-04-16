@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using PlatformService.Dtos;
 using PlatformService.Settings;
+using Serilog;
 
 /*
     Example of an HTTP Client
@@ -36,11 +37,11 @@ namespace PlatformService.DataServices.Sync.Http
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("--> Command API request succeeded");
+                Log.Information("Command API request succeeded");
             }
             else
             {
-                Console.WriteLine("--> Command API request failed");
+                Log.Error("Command API request failed");
             }
         }
     }
