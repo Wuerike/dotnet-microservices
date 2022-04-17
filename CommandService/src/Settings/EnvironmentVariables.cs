@@ -16,6 +16,10 @@ namespace CommandService.Settings
             return _configuration.GetSection("PlatformApi").Get<PlatformApiVariables>();
         }
 
+        public DatabaseVariables DatabaseVariables()
+        {
+            return _configuration.GetSection("Database").Get<DatabaseVariables>();
+        }
 
         public MessageBusVariables MessageBusVariables()
         {

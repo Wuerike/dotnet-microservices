@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CommandService.Models
 {
@@ -6,6 +7,7 @@ namespace CommandService.Models
     {
         [Key]
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [Required]
