@@ -6,9 +6,9 @@ ENV ASPNETCORE_URLS=http://+:5000
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 WORKDIR /src
-COPY ["src/PlatformService.csproj", "./"]
+COPY ["PlatformService/src/PlatformService.csproj", "./"]
 RUN dotnet restore "PlatformService.csproj"
-COPY src .
+COPY PlatformService/src .
 RUN dotnet publish "PlatformService.csproj" -c Release -o /app/publish
 
 FROM base AS final

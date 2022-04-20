@@ -1,5 +1,44 @@
 version: '3.4'
+
 services:
+  platform-api:
+    image: platform-api:v1
+    restart: always
+    env_file:
+      - PlatformService/.env
+    build:
+      context: .
+      dockerfile: ./PlatformService.Dockerfile
+    network_mode: "host"
+    depends_on:
+      - "sql-server"
+      - "rabbitmq3"
+
+  command-api:
+    image: command-api:v1
+    restart: always
+    env_file:
+      - CommandService/.env
+    build:
+      context: .
+      dockerfile: ./CommandService.Dockerfile
+    network_mode: "host"
+    depends_on:
+      - "sql-server"
+      - "rabbitmq3"
+      - "platform-api"
+
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    ports:
+      - 1433:1433
+    env_file:
+      - PlatformService/.env
+    environment:
+      MSSQL_PID: "Express"
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Pa55w0rd!"
+
   rabbitmq3:
     container_name: "rabbitmq"
     image: rabbitmq:3-management

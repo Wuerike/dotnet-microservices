@@ -6,9 +6,9 @@ ENV ASPNETCORE_URLS=http://+:6000
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 WORKDIR /src
-COPY ["src/CommandService.csproj", "./"]
+COPY ["CommandService/src/CommandService.csproj", "./"]
 RUN dotnet restore "CommandService.csproj"
-COPY src .
+COPY CommandService/src .
 RUN dotnet publish "CommandService.csproj" -c Release -o /app/publish
 
 FROM base AS final

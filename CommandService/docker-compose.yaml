@@ -1,9 +1,0 @@
-version: '3.4'
-
-services:
-  command-api:
-    image: command-api:v1
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    network_mode: "host"
