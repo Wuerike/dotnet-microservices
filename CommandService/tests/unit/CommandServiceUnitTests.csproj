@@ -27,4 +27,8 @@
     <ProjectReference Include="..\..\src\CommandService.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
+  </PropertyGroup>
+
 </Project>

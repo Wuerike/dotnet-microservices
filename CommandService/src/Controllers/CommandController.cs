@@ -53,7 +53,7 @@ namespace CommandService.Controllers
         }
     
         [HttpPost] // POST /platforms/{platformId}/commands
-        public ActionResult<PlatformReadDto> CreateCommand(int platformId, CommandCreateDto requestBody)
+        public ActionResult<CommandReadDto> CreateCommand(int platformId, CommandCreateDto requestBody)
         {
 
             if (!_repository.PlatformExists(platformId))
