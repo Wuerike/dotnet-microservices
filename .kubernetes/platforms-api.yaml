@@ -24,7 +24,7 @@ spec:
         - containerPort: 5000
         envFrom:
         - secretRef:
-            name: kube-env
+            name: platform-env
 
 ---
 

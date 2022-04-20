@@ -26,8 +26,8 @@ spec:
         - name: SA_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: kube-env
-              key: PLATFORM_SQL_SERVER_PASSWORD
+              name: platform-env
+              key: Database__DbName
         volumeMounts:
         - mountPath: /var/opt/mssql/data
           name: mssqldb

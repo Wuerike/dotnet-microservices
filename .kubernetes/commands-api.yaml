@@ -24,7 +24,7 @@ spec:
         - containerPort: 6000
         envFrom:
         - secretRef:
-            name: kube-env
+            name: command-env
 
 ---
 
