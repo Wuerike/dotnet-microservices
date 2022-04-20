@@ -1,8 +1,14 @@
 SHELL := /bin/bash
 
 kube-secrets:
-	kubectl delete secret kube-env --ignore-not-found
-	kubectl create secret generic kube-env --from-env-file=.env
+	kubectl delete secret platform-env --ignore-not-found
+	kubectl delete secret command-env --ignore-not-found
+	kubectl create secret generic platform-env --from-env-file=.kubernetes/env/PlatformService.env
+	kubectl create secret generic command-env --from-env-file=.kubernetes/env/CommandService.env
+
+build:
+	docker build -f Dockerfile.PlatformService -t platform-api:v1 .
+	docker build -f Dockerfile.CommandService -t command-api:v1 .
 
 deploy:
 	make kube-secrets

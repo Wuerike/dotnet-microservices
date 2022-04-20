@@ -1,13 +1,7 @@
 SHELL := /bin/bash
 
-unit-test:
+test:
 	cd tests/unit && dotnet test
 
-local-run:
+run:
 	set -a && source .env && set +a && cd src && dotnet run
-
-docker-build:
-	docker build -t command-api:v1 .
-
-docker-run:
-	docker run -it --rm --network=host command-api:v1
